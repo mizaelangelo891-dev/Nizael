@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AGNUS"
+description = "Uma experiência de streaming musical cristão contemporâneo, com curadoria de músicas, descobertas de artistas independentes, estações e reprodução contínua em uma interface premium para celular e desktop."
+version = "1.0.0"
+id = "artifacts/agnus"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19481
+
+[services.development]
+run = "pnpm --filter @workspace/agnus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/agnus", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/agnus/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19481"
+BASE_PATH = "/"

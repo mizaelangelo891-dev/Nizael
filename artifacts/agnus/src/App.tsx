@@ -1,0 +1,210 @@
+import { type ReactNode, useMemo, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ErrorBoundary } from '@/components/error-boundary';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import NotFound from '@/pages/not-found';
+import { BookOpen, ChevronRight, Play, Search } from 'lucide-react';
+import { ArtistCard } from '@/components/agnus/ArtistCard';
+import { BottomNavigation } from '@/components/agnus/BottomNavigation';
+import { CategoryCard } from '@/components/agnus/CategoryCard';
+import { Header } from '@/components/agnus/Header';
+import { MiniPlayer, PlayerSheet } from '@/components/agnus/MiniPlayer';
+import { MusicCard } from '@/components/agnus/MusicCard';
+import { SearchBar } from '@/components/agnus/SearchBar';
+import { StationCard } from '@/components/agnus/StationCard';
+import { artists, categories, stations, tracks, type Artist, type Category, type Station, type Track } from '@/components/agnus/data';
+import {
+  Route,
+  Switch,
+  useLocation,
+  Router as WouterRouter,
+} from 'wouter';
+
+const queryClient = new QueryClient();
+
+function Home() {
+  const [query, setQuery] = useState('');
+  const [activeNav, setActiveNav] = useState<'home' | 'search' | 'library' | 'profile'>('home');
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [playerOpen, setPlayerOpen] = useState(false);
+  const [notice, setNotice] = useState('');
+
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const filteredTracks = useMemo(() => tracks.filter((track) => `${track.title} ${track.artist}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
+  const filteredArtists = useMemo(() => artists.filter((artist) => `${artist.name} ${artist.subtitle}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
+  const filteredCategories = useMemo(() => categories.filter((category) => `${category.title} ${category.detail}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
+
+  const playTrack = (track: Track) => {
+    setCurrentTrack(track);
+    setPlaying(true);
+  };
+  const playStation = (station: Station) => {
+    const stationTrack: Track = { id: `station-${station.id}`, title: station.title, artist: station.detail, duration: '∞', art: station.art, tone: 'estação AGNUS' };
+    setCurrentTrack(stationTrack);
+    setPlaying(true);
+  };
+  const selectArtist = (artist: Artist) => {
+    setNotice(`Abrindo o universo de ${artist.name}.`);
+    setActiveNav('home');
+  };
+  const selectCategory = (category: Category) => {
+    setQuery(category.title);
+    setNotice(`Filtrando por ${category.title}.`);
+    window.scrollTo({ top: 250, behavior: 'smooth' });
+  };
+  const changeNav = (key: 'home' | 'search' | 'library' | 'profile') => {
+    setActiveNav(key);
+    if (key === 'search') {
+      document.getElementById('search')?.focus();
+      setNotice('Busque por uma música, artista ou categoria.');
+    }
+    if (key === 'library') setNotice('Sua biblioteca começa com aquilo que você escolhe guardar.');
+    if (key === 'profile') setNotice('Seu perfil AGNUS está pronto para ser personalizado.');
+  };
+  const notify = () => setNotice('Você está em dia. Novas recomendações aparecem aqui.');
+  const moveTrack = (direction: 1 | -1) => {
+    if (!currentTrack) return;
+    const index = tracks.findIndex((track) => track.id === currentTrack.id);
+    const next = tracks[(index + direction + tracks.length) % tracks.length];
+    setCurrentTrack(next);
+    setPlaying(true);
+  };
+
+  return (
+    <div className="agnus-noise min-h-[100dvh] overflow-x-hidden bg-[#0f100f]">
+      <div className="mx-auto min-h-[100dvh] max-w-[1440px] px-4 pb-32 sm:px-7 lg:px-12 xl:px-16">
+        <Header onProfile={() => changeNav('profile')} onNotify={notify} />
+        <main>
+          <div className="mx-auto max-w-[1180px]">
+            <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
+              <div className="animate-rise">
+                <p className="font-mono-custom text-[10px] uppercase tracking-[.2em] text-[#a18e65]">quinta-feira, 12 de setembro</p>
+                <h1 data-testid="text-greeting" className="mt-2 font-display text-[29px] font-bold tracking-[-.045em] text-[#f0ede5] sm:text-[34px]">Boa noite, Marina.</h1>
+                <p className="mt-2 max-w-[430px] text-[13px] leading-relaxed text-[#85847d]">Um espaço para ouvir com presença.</p>
+              </div>
+              <div className="w-full md:max-w-[360px]">
+                <SearchBar value={query} onChange={(value) => { setQuery(value); setActiveNav('search'); }} onFilter={() => setNotice('Filtros avançados chegam em breve.')} />
+              </div>
+            </div>
+
+            <section data-testid="section-hero" className="animate-rise relative min-h-[292px] overflow-hidden rounded-[26px] border border-white/[.08] art-hero p-6 shadow-[0_20px_60px_rgba(0,0,0,.18)] sm:min-h-[330px] sm:p-9 lg:min-h-[360px] lg:p-12">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#171914]/95 via-[#24271f]/70 to-transparent" />
+              <div className="absolute right-[8%] top-[15%] h-36 w-36 rounded-full border border-[#e4d5ac]/20 sm:h-60 sm:w-60" />
+              <div className="absolute right-[13%] top-[24%] h-24 w-24 rounded-full border border-[#e4d5ac]/15 sm:h-40 sm:w-40" />
+              <div className="relative flex h-full max-w-[520px] flex-col justify-end">
+                <div className="mb-auto flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#d3be88]"><span className="h-1.5 w-1.5 rounded-full bg-[#d3be88]" /> Destaque AGNUS</div>
+                <div>
+                  <h2 className="font-display text-[31px] font-bold leading-[1.04] tracking-[-.055em] text-[#f3eee2] sm:text-[45px]">Adoração que<br className="hidden sm:block" /> permanece.</h2>
+                  <p className="mt-4 max-w-[330px] text-[12px] leading-[1.7] text-[#d8d4c9]/75 sm:text-[13px]">Uma seleção de músicas para acompanhar seu momento com Deus.</p>
+                  <button data-testid="button-hero-play" onClick={() => playTrack(tracks[0])} className="mt-6 inline-flex items-center gap-2.5 rounded-full bg-[#eee8d9] px-5 py-3 text-[11px] font-bold text-[#25251f] transition hover:-translate-y-0.5 hover:bg-white"><span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#25251f] text-[#eee8d9]"><Play size={9} fill="currentColor" /></span> Ouvir agora</button>
+                </div>
+              </div>
+            </section>
+
+            <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_270px] lg:gap-12">
+              <div className="min-w-0">
+                <section data-testid="section-explore" className="animate-rise" style={{ animationDelay: '.08s' }}>
+                  <SectionHeading label="Explore" detail="Encontre o som para hoje" />
+                  <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                    {filteredCategories.map((category) => <CategoryCard key={category.id} category={category} onSelect={selectCategory} />)}
+                    {!filteredCategories.length && <EmptyInline label="Nenhuma categoria encontrada." />}
+                  </div>
+                </section>
+
+                <section data-testid="section-most-played" className="mt-11 animate-rise" style={{ animationDelay: '.14s' }}>
+                  <SectionHeading label="Mais ouvidas" detail="O que está chegando mais longe" action="Ver tudo" onAction={() => setNotice('Você já está ouvindo as faixas mais ouvidas.')} />
+                  <div className="divide-y divide-white/[.055]">
+                    {filteredTracks.slice(0, 4).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={currentTrack?.id === track.id && playing} onPlay={playTrack} />)}
+                    {!filteredTracks.length && <EmptyInline label="Experimente buscar por outro nome." />}
+                  </div>
+                </section>
+
+                <section data-testid="section-discoveries" className="mt-11 animate-rise" style={{ animationDelay: '.2s' }}>
+                  <SectionHeading label="Descobertas do AGNUS" detail="Vozes que merecem espaço" action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
+                  <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                    {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} />)}
+                    {!filteredArtists.length && <EmptyInline label="Nenhuma voz encontrada." />}
+                  </div>
+                </section>
+
+                <section data-testid="section-stations" className="mt-11 animate-rise" style={{ animationDelay: '.26s' }}>
+                  <SectionHeading label="Estações para você" detail="Deixe a próxima música chegar" />
+                  <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                    {stations.map((station) => <StationCard key={station.id} station={station} onPlay={playStation} />)}
+                  </div>
+                </section>
+              </div>
+
+              <aside className="hidden lg:block">
+                <div className="sticky top-8 rounded-[22px] border border-white/[.07] bg-[#151615] p-5">
+                  <div className="flex items-center justify-between"><span className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Artista em ascensão</span><ChevronRight size={15} className="text-[#77756d]" /></div>
+                  <div className="mt-5 flex items-center gap-3">
+                    <div className="art-amber flex h-12 w-12 items-end rounded-xl p-2 text-[10px] font-bold text-white/80">GS</div>
+                    <div><p className="text-[14px] font-semibold text-[#ece8de]">Gabriel Santos</p><p className="mt-1 text-[10px] text-[#7f7e77]">Independente · São Paulo</p></div>
+                  </div>
+                  <p className="mt-5 text-[12px] leading-[1.65] text-[#89877f]">Uma voz nova, letras honestas e uma canção que já encontrou muita gente.</p>
+                  <button data-testid="button-artist-profile" onClick={() => selectArtist(artists[0])} className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[.08] py-2.5 text-[11px] font-semibold text-[#d2bd88] transition hover:bg-white/[.05]">Ver artista <ChevronRight size={14} /></button>
+                </div>
+                {notice && <div data-testid="status-notice" className="mt-3 rounded-2xl border border-[#c7ae76]/20 bg-[#c7ae76]/[.06] px-4 py-3 text-[11px] leading-relaxed text-[#cbb98b] animate-soft-in">{notice}</div>}
+              </aside>
+            </div>
+
+            {(normalizedQuery || activeNav !== 'home') && <div data-testid="status-search-feedback" className="mt-8 flex items-center gap-3 rounded-2xl border border-white/[.07] bg-[#151615] px-4 py-3 text-[12px] text-[#aaa79d] lg:hidden"><Search size={15} className="text-[#c7ae76]" /> {notice || `${filteredTracks.length + filteredArtists.length + filteredCategories.length} resultados para “${query}”`}</div>}
+
+            <section data-testid="section-artist-rise" className="mt-12 border-t border-white/[.07] pt-8 lg:hidden">
+              <div className="flex items-center justify-between"><div><p className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Artista em ascensão</p><h2 className="mt-2 font-display text-xl font-bold text-[#eeeae0]">Gabriel Santos</h2></div><div className="art-amber flex h-14 w-14 items-end rounded-2xl p-2 text-[10px] font-bold text-white/80">GS</div></div>
+              <p className="mt-3 max-w-[400px] text-[12px] leading-relaxed text-[#85837b]">Uma voz nova, letras honestas e uma canção que já encontrou muita gente.</p>
+              <button data-testid="button-artist-profile-mobile" onClick={() => selectArtist(artists[0])} className="mt-4 text-[11px] font-semibold text-[#cdb783]">Conhecer Gabriel Santos <ChevronRight className="ml-1 inline" size={13} /></button>
+            </section>
+          </div>
+        </main>
+      </div>
+      {currentTrack && <MiniPlayer track={currentTrack} playing={playing} onToggle={() => setPlaying((value) => !value)} onOpen={() => setPlayerOpen(true)} onPrevious={() => moveTrack(-1)} onNext={() => moveTrack(1)} />}
+      {currentTrack && playerOpen && <PlayerSheet track={currentTrack} playing={playing} onToggle={() => setPlaying((value) => !value)} onClose={() => setPlayerOpen(false)} onPrevious={() => moveTrack(-1)} onNext={() => moveTrack(1)} />}
+      <BottomNavigation active={activeNav} onChange={changeNav} />
+    </div>
+  );
+}
+
+function SectionHeading({ label, detail, action, onAction }: { label: string; detail?: string; action?: string; onAction?: () => void }) {
+  return <div className="mb-4 flex items-end justify-between gap-3"><div><h2 className="font-display text-[19px] font-bold tracking-[-.035em] text-[#eeebe3]">{label}</h2>{detail && <p className="mt-1 text-[11px] text-[#777770]">{detail}</p>}</div>{action && <button data-testid={`button-section-${label.toLocaleLowerCase().replaceAll(' ', '-')}`} onClick={onAction} className="shrink-0 text-[10px] font-semibold text-[#af996b] transition hover:text-[#d8c18b]">{action} <ChevronRight size={12} className="ml-0.5 inline" /></button>}</div>;
+}
+
+function EmptyInline({ label }: { label: string }) {
+  return <div data-testid="status-empty-results" className="flex min-h-20 items-center gap-3 rounded-2xl border border-dashed border-white/[.1] px-4 text-[12px] text-[#85837b]"><BookOpen size={16} className="text-[#958361]" />{label}</div>;
+}
+
+function Router() {
+  return (
+    // Keep a shared shell (sidebar, navbar) outside the boundary so it
+    // survives a page crash.
+    <RoutedErrorBoundary>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route component={NotFound} />
+      </Switch>
+    </RoutedErrorBoundary>
+  );
+}
+
+function RoutedErrorBoundary({ children }: { children: ReactNode }) {
+  const [location] = useLocation();
+  return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
