@@ -135,13 +135,45 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
 }
 
-.art-hero { background: radial-gradient(circle at 72% 22%, rgba(204,183,132,.45), transparent 25%), radial-gradient(circle at 42% 75%, rgba(74,78,69,.6), transparent 40%), linear-gradient(130deg, #22251f, #77705e 46%, #24251f); }
-.art-amber { background: radial-gradient(circle at 66% 18%, #ddb96f, transparent 32%), linear-gradient(145deg, #171b18, #795d39 55%, #2c302c); }
-.art-indigo { background: radial-gradient(circle at 70% 22%, #949eac, transparent 28%), linear-gradient(145deg, #11161e, #45515a 52%, #1b2028); }
-.art-rust { background: radial-gradient(circle at 26% 25%, #dc9b75, transparent 30%), linear-gradient(145deg, #301b1b, #8d5543 53%, #201c1b); }
-.art-sage { background: radial-gradient(circle at 73% 30%, #b8c9a3, transparent 29%), linear-gradient(145deg, #27322c, #68745e 54%, #202620); }
-.art-violet { background: radial-gradient(circle at 68% 25%, #a393ae, transparent 30%), linear-gradient(145deg, #25202d, #68566c 52%, #16171e); }
-.art-sand { background: radial-gradient(circle at 32% 20%, #d2c59c, transparent 32%), linear-gradient(145deg, #383327, #a38d65 52%, #24231f); }
+.art-hero { background: radial-gradient(circle at 76% 24%, rgba(204,183,132,.28), transparent 24%), radial-gradient(circle at 42% 78%, rgba(74,78,69,.55), transparent 38%), linear-gradient(132deg, #191b18, #4e5046 48%, #242620); }
+.art-amber { background: radial-gradient(circle at 66% 18%, #d5b369, transparent 30%), linear-gradient(145deg, #171b18, #6b5435 55%, #292d2a); }
+.art-indigo { background: radial-gradient(circle at 70% 22%, #8c98a7, transparent 26%), linear-gradient(145deg, #11161e, #3f4b55 52%, #1b2028); }
+.art-rust { background: radial-gradient(circle at 26% 25%, #cf8d6d, transparent 28%), linear-gradient(145deg, #301b1b, #7d4d3f 53%, #201c1b); }
+.art-sage { background: radial-gradient(circle at 73% 30%, #aebe9c, transparent 27%), linear-gradient(145deg, #27322c, #5e6b56 54%, #202620); }
+.art-violet { background: radial-gradient(circle at 68% 25%, #988aa5, transparent 28%), linear-gradient(145deg, #25202d, #5e5064 52%, #16171e); }
+.art-sand { background: radial-gradient(circle at 32% 20%, #c9b88c, transparent 30%), linear-gradient(145deg, #383327, #927e59 52%, #24231f); }
+
+.cover-art::before,
+.artist-art::before,
+.category-art::before,
+.station-art::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  transform: rotate(-18deg) scaleY(.72);
+}
+.cover-art::after,
+.artist-art::after,
+.category-art::after,
+.station-art::after {
+  content: '';
+  position: absolute;
+  inset: 27% 9% 9% 27%;
+  border-radius: 50%;
+  background: rgba(0,0,0,.12);
+}
+.cover-art-mark {
+  position: absolute;
+  bottom: 5px;
+  left: 6px;
+  z-index: 1;
+  font-family: var(--app-font-mono);
+  font-size: 6px;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.58);
+}
 
 .scroll-fade {
   mask-image: linear-gradient(to right, transparent 0, black 22px, black calc(100% - 22px), transparent 100%);

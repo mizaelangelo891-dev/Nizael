@@ -5,9 +5,10 @@ type MusicCardProps = { track: Track; index: number; active: boolean; onPlay: (t
 
 export function MusicCard({ track, index, active, onPlay }: MusicCardProps) {
   return (
-    <div data-testid={`card-track-${track.id}`} className="group flex min-w-0 items-center gap-3 rounded-2xl py-2.5 transition hover:bg-white/[.035] md:px-2">
+    <div data-testid={`card-track-${track.id}`} className="group flex min-w-0 items-center gap-3 rounded-[18px] py-3 transition hover:bg-white/[.035] md:px-3">
       <span className="w-4 shrink-0 text-center font-mono-custom text-[11px] text-[#666661]">{String(index + 1).padStart(2, '0')}</span>
-      <button data-testid={`button-play-track-${track.id}`} onClick={() => onPlay(track)} className={`relative h-12 w-12 shrink-0 overflow-hidden rounded-xl ${track.art} shadow-[inset_0_0_0_1px_rgba(255,255,255,.08)]`}>
+      <button data-testid={`button-play-track-${track.id}`} onClick={() => onPlay(track)} className={`relative h-12 w-12 shrink-0 overflow-hidden rounded-[14px] ${track.art} cover-art shadow-[inset_0_0_0_1px_rgba(255,255,255,.09)]`}>
+        <span className="cover-art-mark">AGNUS</span>
         <span className="absolute inset-0 flex items-center justify-center bg-black/10 text-[#f5f0e4] opacity-0 transition group-hover:opacity-100">{active ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}</span>
         {active && <span className="absolute inset-x-0 bottom-0 flex h-4 items-end justify-center gap-[2px] bg-black/20 pb-1"><i className="equalizer-bar h-2 w-[2px] rounded-full bg-[#e5d6b0]" /><i className="equalizer-bar h-3 w-[2px] rounded-full bg-[#e5d6b0]" /><i className="equalizer-bar h-1.5 w-[2px] rounded-full bg-[#e5d6b0]" /></span>}
       </button>

@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-display: 'Manrope', sans-serif;
+  --app-font-mono: 'DM Sans', sans-serif;
+}
+
+.agnus-home {
+  font-family: var(--app-font-sans);
+}
+.agnus-home .font-display { font-family: var(--app-font-display); }
+.agnus-home .font-mono-custom { font-family: var(--app-font-mono); }
+@keyframes agnus-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes agnus-soft-in { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+@keyframes agnus-equalizer { 0%, 100% { transform: scaleY(.38); } 50% { transform: scaleY(1); } }
+.agnus-home .animate-rise { animation: agnus-rise .65s cubic-bezier(.2,.7,.2,1) both; }
+.agnus-home .animate-soft-in { animation: agnus-soft-in .4s ease both; }
+.agnus-home .equalizer-bar { transform-origin: bottom; animation: agnus-equalizer 1s ease-in-out infinite; }
+.agnus-home .equalizer-bar:nth-child(2) { animation-delay: .15s; }
+.agnus-home .equalizer-bar:nth-child(3) { animation-delay: .3s; }
+.agnus-home.agnus-noise::after {
+  content: ''; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+}
+.agnus-home .art-hero { background: radial-gradient(circle at 72% 22%, rgba(204,183,132,.45), transparent 25%), radial-gradient(circle at 42% 75%, rgba(74,78,69,.6), transparent 40%), linear-gradient(130deg, #22251f, #77705e 46%, #24251f); }
+.agnus-home .art-amber { background: radial-gradient(circle at 66% 18%, #ddb96f, transparent 32%), linear-gradient(145deg, #171b18, #795d39 55%, #2c302c); }
+.agnus-home .art-indigo { background: radial-gradient(circle at 70% 22%, #949eac, transparent 28%), linear-gradient(145deg, #11161e, #45515a 52%, #1b2028); }
+.agnus-home .art-rust { background: radial-gradient(circle at 26% 25%, #dc9b75, transparent 30%), linear-gradient(145deg, #301b1b, #8d5543 53%, #201c1b); }
+.agnus-home .art-sage { background: radial-gradient(circle at 73% 30%, #b8c9a3, transparent 29%), linear-gradient(145deg, #27322c, #68745e 54%, #202620); }
+.agnus-home .art-violet { background: radial-gradient(circle at 68% 25%, #a393ae, transparent 30%), linear-gradient(145deg, #25202d, #68566c 52%, #16171e); }
+.agnus-home .art-sand { background: radial-gradient(circle at 32% 20%, #d2c59c, transparent 32%), linear-gradient(145deg, #383327, #a38d65 52%, #24231f); }
+.agnus-home .scroll-fade { mask-image: linear-gradient(to right, transparent 0, black 22px, black calc(100% - 22px), transparent 100%); }

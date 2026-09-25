@@ -8,6 +8,7 @@ import { BookOpen, ChevronRight, Play, Search } from 'lucide-react';
 import { ArtistCard } from '@/components/agnus/ArtistCard';
 import { BottomNavigation } from '@/components/agnus/BottomNavigation';
 import { CategoryCard } from '@/components/agnus/CategoryCard';
+import { ContinueCard } from '@/components/agnus/ContinueCard';
 import { Header } from '@/components/agnus/Header';
 import { MiniPlayer, PlayerSheet } from '@/components/agnus/MiniPlayer';
 import { MusicCard } from '@/components/agnus/MusicCard';
@@ -80,9 +81,9 @@ function Home() {
           <div className="mx-auto max-w-[1180px]">
             <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
               <div className="animate-rise">
-                <p className="font-mono-custom text-[10px] uppercase tracking-[.2em] text-[#a18e65]">quinta-feira, 12 de setembro</p>
+                 <p className="font-mono-custom text-[10px] uppercase tracking-[.2em] text-[#a18e65]">quinta-feira, 12 de setembro</p>
                 <h1 data-testid="text-greeting" className="mt-2 font-display text-[29px] font-bold tracking-[-.045em] text-[#f0ede5] sm:text-[34px]">Boa noite, Marina.</h1>
-                <p className="mt-2 max-w-[430px] text-[13px] leading-relaxed text-[#85847d]">Um espaço para ouvir com presença.</p>
+                <p className="mt-2 max-w-[430px] text-[13px] leading-relaxed text-[#85847d]">Encontre músicas que apontam para Cristo.</p>
               </div>
               <div className="w-full md:max-w-[360px]">
                 <SearchBar value={query} onChange={(value) => { setQuery(value); setActiveNav('search'); }} onFilter={() => setNotice('Filtros avançados chegam em breve.')} />
@@ -103,8 +104,15 @@ function Home() {
               </div>
             </section>
 
-            <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_270px] lg:gap-12">
-              <div className="min-w-0">
+             <section data-testid="section-continue" className="mt-8 animate-rise" style={{ animationDelay: '.08s' }}>
+               <SectionHeading label="Continue ouvindo" detail="Retome de onde você parou" />
+               <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-2 lg:overflow-visible">
+                 {[tracks[0], tracks[4]].map((track) => <ContinueCard key={track.id} track={track} active={currentTrack?.id === track.id && playing} onPlay={playTrack} />)}
+               </div>
+             </section>
+
+             <div className="mt-8">
+               <div className="min-w-0">
                 <section data-testid="section-explore" className="animate-rise" style={{ animationDelay: '.08s' }}>
                   <SectionHeading label="Explore" detail="Encontre o som para hoje" />
                   <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
@@ -121,13 +129,35 @@ function Home() {
                   </div>
                 </section>
 
-                <section data-testid="section-discoveries" className="mt-11 animate-rise" style={{ animationDelay: '.2s' }}>
+                 <section data-testid="section-discoveries" className="mt-11 animate-rise" style={{ animationDelay: '.2s' }}>
                   <SectionHeading label="Descobertas do AGNUS" detail="Vozes que merecem espaço" action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
                   <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
                     {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} />)}
                     {!filteredArtists.length && <EmptyInline label="Nenhuma voz encontrada." />}
                   </div>
                 </section>
+
+                 <section data-testid="section-artist-rise" className="mt-11 animate-rise" style={{ animationDelay: '.24s' }}>
+                   <SectionHeading label="Artistas em ascensão" detail="Novos nomes para acompanhar" action="Ver todos" onAction={() => setNotice('Você está vendo os artistas que mais estão crescendo no AGNUS.')} />
+                   <div className="grid gap-4 lg:grid-cols-[minmax(240px,.9fr)_minmax(0,1.8fr)]">
+                     <div className="relative overflow-hidden rounded-[20px] border border-white/[.07] bg-[#151615] p-5">
+                       <div className="absolute -right-8 -top-10 h-32 w-32 rounded-full border border-[#c7ae76]/15" />
+                       <div className="relative flex items-start justify-between gap-4">
+                         <div>
+                           <p className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Em destaque</p>
+                           <h3 className="mt-2 font-display text-[18px] font-bold tracking-[-.035em] text-[#eeeae0]">Gabriel Santos</h3>
+                           <p className="mt-1 text-[11px] text-[#7f7e77]">Adoração · Independente</p>
+                         </div>
+                         <div className="art-amber artist-art relative flex h-12 w-12 shrink-0 items-end rounded-[15px] p-2 text-[10px] font-bold text-white/80">GS</div>
+                       </div>
+                       <p className="relative mt-5 max-w-[280px] text-[12px] leading-[1.65] text-[#89877f]">Conheça um dos novos nomes que estão chegando ao AGNUS.</p>
+                       <button data-testid="button-artist-profile" onClick={() => selectArtist(artists[0])} className="relative mt-5 flex items-center gap-2 text-[11px] font-semibold text-[#d2bd88] transition hover:text-[#f0d69b]">Conhecer artista <ChevronRight size={14} /></button>
+                     </div>
+                     <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                       {artists.slice(1, 4).map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} />)}
+                     </div>
+                   </div>
+                 </section>
 
                 <section data-testid="section-stations" className="mt-11 animate-rise" style={{ animationDelay: '.26s' }}>
                   <SectionHeading label="Estações para você" detail="Deixe a próxima música chegar" />
@@ -136,28 +166,9 @@ function Home() {
                   </div>
                 </section>
               </div>
-
-              <aside className="hidden lg:block">
-                <div className="sticky top-8 rounded-[22px] border border-white/[.07] bg-[#151615] p-5">
-                  <div className="flex items-center justify-between"><span className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Artista em ascensão</span><ChevronRight size={15} className="text-[#77756d]" /></div>
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="art-amber flex h-12 w-12 items-end rounded-xl p-2 text-[10px] font-bold text-white/80">GS</div>
-                    <div><p className="text-[14px] font-semibold text-[#ece8de]">Gabriel Santos</p><p className="mt-1 text-[10px] text-[#7f7e77]">Independente · São Paulo</p></div>
-                  </div>
-                  <p className="mt-5 text-[12px] leading-[1.65] text-[#89877f]">Uma voz nova, letras honestas e uma canção que já encontrou muita gente.</p>
-                  <button data-testid="button-artist-profile" onClick={() => selectArtist(artists[0])} className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[.08] py-2.5 text-[11px] font-semibold text-[#d2bd88] transition hover:bg-white/[.05]">Ver artista <ChevronRight size={14} /></button>
-                </div>
-                {notice && <div data-testid="status-notice" className="mt-3 rounded-2xl border border-[#c7ae76]/20 bg-[#c7ae76]/[.06] px-4 py-3 text-[11px] leading-relaxed text-[#cbb98b] animate-soft-in">{notice}</div>}
-              </aside>
             </div>
 
-            {(normalizedQuery || activeNav !== 'home') && <div data-testid="status-search-feedback" className="mt-8 flex items-center gap-3 rounded-2xl border border-white/[.07] bg-[#151615] px-4 py-3 text-[12px] text-[#aaa79d] lg:hidden"><Search size={15} className="text-[#c7ae76]" /> {notice || `${filteredTracks.length + filteredArtists.length + filteredCategories.length} resultados para “${query}”`}</div>}
-
-            <section data-testid="section-artist-rise" className="mt-12 border-t border-white/[.07] pt-8 lg:hidden">
-              <div className="flex items-center justify-between"><div><p className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Artista em ascensão</p><h2 className="mt-2 font-display text-xl font-bold text-[#eeeae0]">Gabriel Santos</h2></div><div className="art-amber flex h-14 w-14 items-end rounded-2xl p-2 text-[10px] font-bold text-white/80">GS</div></div>
-              <p className="mt-3 max-w-[400px] text-[12px] leading-relaxed text-[#85837b]">Uma voz nova, letras honestas e uma canção que já encontrou muita gente.</p>
-              <button data-testid="button-artist-profile-mobile" onClick={() => selectArtist(artists[0])} className="mt-4 text-[11px] font-semibold text-[#cdb783]">Conhecer Gabriel Santos <ChevronRight className="ml-1 inline" size={13} /></button>
-            </section>
+             {(normalizedQuery || activeNav !== 'home' || notice) && <div data-testid="status-search-feedback" className="mt-8 flex items-center gap-3 rounded-2xl border border-white/[.07] bg-[#151615] px-4 py-3 text-[12px] text-[#aaa79d]"><Search size={15} className="text-[#c7ae76]" /> {notice || `${filteredTracks.length + filteredArtists.length + filteredCategories.length} resultados para “${query}”`}</div>}
           </div>
         </main>
       </div>
