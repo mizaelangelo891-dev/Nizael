@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -75,8 +75,8 @@
   --sidebar-accent-foreground: 36 20% 93%;
   --sidebar-ring: 41 34% 64%;
   --app-font-sans: 'DM Sans', sans-serif;
-  --app-font-display: 'Manrope', sans-serif;
-  --app-font-mono: 'DM Sans', sans-serif;
+  --app-font-display: 'Instrument Serif', Georgia, serif;
+  --app-font-mono: 'IBM Plex Mono', monospace;
   --radius: 0.9rem;
   --tracking-normal: 0em;
   --spacing: 0.25rem;
@@ -177,4 +177,96 @@
 
 .scroll-fade {
   mask-image: linear-gradient(to right, transparent 0, black 22px, black calc(100% - 22px), transparent 100%);
+}
+
+.agnus-hero {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 72% 16%, rgba(203, 183, 133, .18), transparent 20%),
+    radial-gradient(circle at 30% 92%, rgba(69, 83, 72, .28), transparent 38%),
+    linear-gradient(118deg, #171915 0%, #2a2e27 48%, #161815 100%);
+}
+
+.agnus-hero::before {
+  content: '';
+  position: absolute;
+  inset: -22% -4% -28% 42%;
+  z-index: -1;
+  opacity: .56;
+  transform: rotate(-13deg);
+  background: repeating-radial-gradient(ellipse at center, transparent 0 26px, rgba(230, 213, 170, .17) 27px 28px, transparent 29px 52px);
+  mask-image: linear-gradient(to left, black 0%, transparent 78%);
+}
+
+.agnus-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .7;
+  background: linear-gradient(90deg, rgba(18, 20, 17, .96) 0%, rgba(21, 24, 20, .76) 42%, rgba(21, 24, 20, .08) 100%);
+}
+
+.agnus-section {
+  position: relative;
+}
+
+.agnus-section::before {
+  content: '';
+  position: absolute;
+  top: .65rem;
+  left: -1rem;
+  width: 2px;
+  height: 2.4rem;
+  background: linear-gradient(to bottom, rgba(201, 177, 120, .7), transparent);
+  opacity: .7;
+}
+
+.agnus-section-secondary::before {
+  opacity: .25;
+  height: 1.6rem;
+}
+
+.agnus-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(206, 184, 135, .45), rgba(255,255,255,.08), transparent);
+}
+
+.agnus-artwork {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.agnus-artwork::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(140deg, rgba(255,255,255,.09), transparent 42%, rgba(0,0,0,.3));
+  mix-blend-mode: screen;
+}
+
+.agnus-artwork::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  bottom: 12%;
+  width: 44%;
+  height: 44%;
+  border: 1px solid rgba(244, 229, 188, .22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 17px rgba(244, 229, 188, .045), 0 0 0 34px rgba(244, 229, 188, .03);
+  opacity: .7;
+}
+
+@media (min-width: 768px) {
+  .agnus-section::before { left: -1.35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-soft-in,
+  .equalizer-bar { animation: none; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }

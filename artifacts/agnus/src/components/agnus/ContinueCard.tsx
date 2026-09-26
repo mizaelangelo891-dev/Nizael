@@ -12,7 +12,7 @@ export function ContinueCard({ track, active, onPlay }: ContinueCardProps) {
     <button
       data-testid={`card-continue-${track.id}`}
       onClick={() => onPlay(track)}
-      className="group flex min-w-[250px] flex-1 items-center gap-3 rounded-[20px] border border-white/[.07] bg-[#151615] p-3 text-left transition duration-300 hover:-translate-y-0.5 hover:border-[#c7ae76]/35 hover:bg-[#1a1b19]"
+      className="group flex min-w-[250px] flex-1 items-center gap-3 border-b border-white/[.1] bg-[#151615]/70 p-3 text-left transition duration-300 hover:border-[#c7ae76]/45 hover:bg-[#1a1b19]"
     >
       <div className={`relative h-[68px] w-[68px] shrink-0 overflow-hidden rounded-[16px] ${track.art} cover-art`}>
         <span className="cover-art-mark">AGNUS</span>

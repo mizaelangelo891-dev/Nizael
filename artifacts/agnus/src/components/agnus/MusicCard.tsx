@@ -12,7 +12,7 @@ type MusicCardProps = {
 
 export function MusicCard({ track, index, active, onPlay, onAddToLibrary, inLibrary = false }: MusicCardProps) {
   return (
-    <div data-testid={`card-track-${track.id}`} className="group flex min-w-0 items-center gap-3 rounded-[18px] py-3 transition hover:bg-white/[.035] md:px-3">
+    <div data-testid={`card-track-${track.id}`} className="group flex min-w-0 items-center gap-3 border-b border-white/[.06] py-3 transition hover:bg-white/[.025] md:px-3">
       <span className="w-4 shrink-0 text-center font-mono-custom text-[11px] text-[#666661]">{String(index + 1).padStart(2, '0')}</span>
       <button data-testid={`button-play-track-${track.id}`} onClick={() => onPlay(track)} className={`relative h-12 w-12 shrink-0 overflow-hidden rounded-[14px] ${track.art} cover-art shadow-[inset_0_0_0_1px_rgba(255,255,255,.09)]`}>
         <span className="cover-art-mark">AGNUS</span>

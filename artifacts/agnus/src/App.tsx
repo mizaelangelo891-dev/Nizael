@@ -75,10 +75,10 @@ function Home({ player }: { player: PlayerControls }) {
   return (
     <div className="agnus-noise min-h-[100dvh] overflow-x-hidden bg-[#0f100f]">
       <div className="mx-auto min-h-[100dvh] max-w-[1440px] px-4 pb-32 sm:px-7 lg:px-12 xl:px-16">
-        <Header onProfile={() => changeNav('profile')} onNotify={notify} />
+        <Header activeNav={activeNav} onNavigate={changeNav} onProfile={() => changeNav('profile')} onNotify={notify} />
         <main>
           <div className="mx-auto max-w-[1180px]">
-            <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
+            <div className="mb-8 mt-9 flex flex-col gap-5 md:mb-11 md:flex-row md:items-end md:justify-between">
               <div className="animate-rise">
                  <p className="font-mono-custom text-[10px] uppercase tracking-[.2em] text-[#a18e65]">quinta-feira, 12 de setembro</p>
                 <h1 data-testid="text-greeting" className="mt-2 font-display text-[29px] font-bold tracking-[-.045em] text-[#f0ede5] sm:text-[34px]">Boa noite, Marina.</h1>
@@ -89,83 +89,72 @@ function Home({ player }: { player: PlayerControls }) {
               </div>
             </div>
 
-            <section data-testid="section-hero" className="animate-rise relative min-h-[292px] overflow-hidden rounded-[26px] border border-white/[.08] art-hero p-6 shadow-[0_20px_60px_rgba(0,0,0,.18)] sm:min-h-[330px] sm:p-9 lg:min-h-[360px] lg:p-12">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#171914]/95 via-[#24271f]/70 to-transparent" />
-              <div className="absolute right-[8%] top-[15%] h-36 w-36 rounded-full border border-[#e4d5ac]/20 sm:h-60 sm:w-60" />
-              <div className="absolute right-[13%] top-[24%] h-24 w-24 rounded-full border border-[#e4d5ac]/15 sm:h-40 sm:w-40" />
+            <section data-testid="section-hero" className="agnus-hero agnus-artwork animate-rise relative min-h-[310px] overflow-hidden border border-white/[.08] p-6 shadow-[0_28px_75px_rgba(0,0,0,.22)] sm:min-h-[350px] sm:p-9 lg:min-h-[390px] lg:p-12">
               <div className="relative flex h-full max-w-[520px] flex-col justify-end">
-                <div className="mb-auto flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#d3be88]"><span className="h-1.5 w-1.5 rounded-full bg-[#d3be88]" /> Destaque AGNUS</div>
+                <div className="mb-auto flex items-center gap-3 text-[9px] font-semibold uppercase tracking-[.24em] text-[#d3be88]"><span className="h-px w-7 bg-[#d3be88]" /> Destaque AGNUS <span className="font-mono-custom text-[8px] tracking-[.12em] text-white/35">01 / 05</span></div>
                 <div>
-                  <h2 className="font-display text-[31px] font-bold leading-[1.04] tracking-[-.055em] text-[#f3eee2] sm:text-[45px]">Adoração que<br className="hidden sm:block" /> permanece.</h2>
-                  <p className="mt-4 max-w-[330px] text-[12px] leading-[1.7] text-[#d8d4c9]/75 sm:text-[13px]">Uma seleção de músicas para acompanhar seu momento com Deus.</p>
-                  <button data-testid="button-hero-play" onClick={() => playTrack(tracks[0])} className="mt-6 inline-flex items-center gap-2.5 rounded-full bg-[#eee8d9] px-5 py-3 text-[11px] font-bold text-[#25251f] transition hover:-translate-y-0.5 hover:bg-white"><span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#25251f] text-[#eee8d9]"><Play size={9} fill="currentColor" /></span> Ouvir agora</button>
+                  <h2 className="font-display text-[40px] leading-[.94] tracking-[-.035em] text-[#f3eee2] sm:text-[58px]">Adoração que<br className="hidden sm:block" /> permanece.</h2>
+                  <p className="mt-5 max-w-[350px] text-[12px] leading-[1.8] text-[#d8d4c9]/75 sm:text-[13px]">Canções para acompanhar seu momento com Deus.</p>
+                  <button data-testid="button-hero-play" onClick={() => playTrack(tracks[0])} className="mt-7 inline-flex items-center gap-2.5 border border-[#f4edda]/80 bg-[#eee8d9] px-5 py-3 text-[11px] font-bold text-[#25251f] transition hover:-translate-y-0.5 hover:bg-white"><span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#25251f] text-[#eee8d9]"><Play size={9} fill="currentColor" /></span> Ouvir agora</button>
                 </div>
               </div>
             </section>
 
-             <section data-testid="section-continue" className="mt-8 animate-rise" style={{ animationDelay: '.08s' }}>
+             <section data-testid="section-continue" className="agnus-section mt-11 animate-rise" style={{ animationDelay: '.08s' }}>
                <SectionHeading label="Continue ouvindo" detail="Retome de onde você parou" />
                <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-2 lg:overflow-visible">
                  {[tracks[0], tracks[4]].map((track) => <ContinueCard key={track.id} track={track} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
                </div>
              </section>
 
-             <div className="mt-8">
-               <div className="min-w-0">
-                <section data-testid="section-explore" className="animate-rise" style={{ animationDelay: '.08s' }}>
-                  <SectionHeading label="Explore" detail="Encontre o som para hoje" />
+              <div className="mt-14 space-y-14">
+                <section data-testid="section-most-played" className="agnus-section animate-rise" style={{ animationDelay: '.14s' }}>
+                  <SectionHeading label="Feito para você" detail="Uma sequência montada para o seu momento" action="Ver tudo" onAction={() => setNotice('Você já está ouvindo uma seleção feita para você.')} />
+                  <div className="grid gap-x-8 lg:grid-cols-2">
+                    {filteredTracks.slice(1, 5).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
+                    {!filteredTracks.length && <EmptyInline label="Experimente buscar por outro nome." />}
+                  </div>
+                </section>
+
+                <section data-testid="section-discoveries" className="agnus-section animate-rise" style={{ animationDelay: '.2s' }}>
+                  <div data-testid="section-artist-rise">
+                    <SectionHeading label="Descubra novos artistas" detail="Artistas independentes para acompanhar" action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
+                    <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                      {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} onListen={playArtist} />)}
+                      {!filteredArtists.length && <EmptyInline label="Nenhuma voz encontrada." />}
+                    </div>
+                  </div>
+                </section>
+
+                <section data-testid="section-adoration" className="agnus-section agnus-section-secondary animate-rise" style={{ animationDelay: '.24s' }}>
+                  <SectionHeading label="Adoração" detail="Uma seleção para permanecer" />
+                  <div className="grid gap-x-8 lg:grid-cols-2">
+                    {tracks.slice(0, 4).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
+                  </div>
+                </section>
+
+                <section data-testid="section-new-releases" className="agnus-section agnus-section-secondary animate-rise" style={{ animationDelay: '.28s' }}>
+                  <SectionHeading label="Novos lançamentos" detail="Faixas recentes para descobrir" />
+                  <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
+                    {[tracks[4], tracks[5], tracks[0]].map((track) => <ContinueCard key={track.id} track={track} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
+                  </div>
+                </section>
+
+                <section data-testid="section-explore" className="agnus-section agnus-section-secondary animate-rise" style={{ animationDelay: '.32s' }}>
+                  <SectionHeading label="Explore por intenção" detail="Encontre o som para hoje" />
                   <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
                     {filteredCategories.map((category) => <CategoryCard key={category.id} category={category} onSelect={selectCategory} />)}
                     {!filteredCategories.length && <EmptyInline label="Nenhuma categoria encontrada." />}
                   </div>
                 </section>
 
-                <section data-testid="section-most-played" className="mt-11 animate-rise" style={{ animationDelay: '.14s' }}>
-                  <SectionHeading label="Mais ouvidas" detail="O que está chegando mais longe" action="Ver tudo" onAction={() => setNotice('Você já está ouvindo as faixas mais ouvidas.')} />
-                  <div className="divide-y divide-white/[.055]">
-                     {filteredTracks.slice(0, 4).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
-                    {!filteredTracks.length && <EmptyInline label="Experimente buscar por outro nome." />}
-                  </div>
-                </section>
-
-                 <section data-testid="section-discoveries" className="mt-11 animate-rise" style={{ animationDelay: '.2s' }}>
-                   <SectionHeading label="Descobertas do AGNUS" detail="Novas vozes. Novas histórias. A mesma fé." action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
-                  <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
-                     {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} onListen={playArtist} />)}
-                    {!filteredArtists.length && <EmptyInline label="Nenhuma voz encontrada." />}
-                  </div>
-                </section>
-
-                 <section data-testid="section-artist-rise" className="mt-11 animate-rise" style={{ animationDelay: '.24s' }}>
-                   <SectionHeading label="Artistas em ascensão" detail="Novos nomes para acompanhar" action="Ver todos" onAction={() => setNotice('Você está vendo os artistas que mais estão crescendo no AGNUS.')} />
-                   <div className="grid gap-4 lg:grid-cols-[minmax(240px,.9fr)_minmax(0,1.8fr)]">
-                     <div className="relative overflow-hidden rounded-[20px] border border-white/[.07] bg-[#151615] p-5">
-                       <div className="absolute -right-8 -top-10 h-32 w-32 rounded-full border border-[#c7ae76]/15" />
-                       <div className="relative flex items-start justify-between gap-4">
-                         <div>
-                           <p className="font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#958361]">Em destaque</p>
-                           <h3 className="mt-2 font-display text-[18px] font-bold tracking-[-.035em] text-[#eeeae0]">Gabriel Santos</h3>
-                           <p className="mt-1 text-[11px] text-[#7f7e77]">Adoração · Independente</p>
-                         </div>
-                         <div className="art-amber artist-art relative flex h-12 w-12 shrink-0 items-end rounded-[15px] p-2 text-[10px] font-bold text-white/80">GS</div>
-                       </div>
-                       <p className="relative mt-5 max-w-[280px] text-[12px] leading-[1.65] text-[#89877f]">Conheça um dos novos nomes que estão chegando ao AGNUS.</p>
-                       <button data-testid="button-artist-profile" onClick={() => selectArtist(artists[0])} className="relative mt-5 flex items-center gap-2 text-[11px] font-semibold text-[#d2bd88] transition hover:text-[#f0d69b]">Conhecer artista <ChevronRight size={14} /></button>
-                     </div>
-                     <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
-                        {artists.slice(1, 4).map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} onListen={playArtist} />)}
-                     </div>
-                   </div>
-                 </section>
-
-                <section data-testid="section-stations" className="mt-11 animate-rise" style={{ animationDelay: '.26s' }}>
+                <section data-testid="section-stations" className="agnus-section agnus-section-secondary animate-rise" style={{ animationDelay: '.36s' }}>
                   <SectionHeading label="Estações para você" detail="Deixe a próxima música chegar" />
                   <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
                     {stations.map((station) => <StationCard key={station.id} station={station} onPlay={playStation} />)}
                   </div>
                 </section>
               </div>
-            </div>
 
              {(normalizedQuery || activeNav !== 'home' || notice) && <div data-testid="status-search-feedback" className="mt-8 flex items-center gap-3 rounded-2xl border border-white/[.07] bg-[#151615] px-4 py-3 text-[12px] text-[#aaa79d]"><Search size={15} className="text-[#c7ae76]" /> {notice || `${filteredTracks.length + filteredArtists.length + filteredCategories.length} resultados para “${query}”`}</div>}
           </div>
