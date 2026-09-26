@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -75,7 +75,7 @@
   --sidebar-accent-foreground: 36 20% 93%;
   --sidebar-ring: 41 34% 64%;
   --app-font-sans: 'DM Sans', sans-serif;
-  --app-font-display: 'Instrument Serif', Georgia, serif;
+  --app-font-display: 'Space Grotesk', 'DM Sans', sans-serif;
   --app-font-mono: 'IBM Plex Mono', monospace;
   --radius: 0.9rem;
   --tracking-normal: 0em;
@@ -181,30 +181,28 @@
 
 .agnus-hero {
   isolation: isolate;
-  background:
-    radial-gradient(circle at 72% 16%, rgba(203, 183, 133, .18), transparent 20%),
-    radial-gradient(circle at 30% 92%, rgba(69, 83, 72, .28), transparent 38%),
-    linear-gradient(118deg, #171915 0%, #2a2e27 48%, #161815 100%);
+  background: #171916;
 }
 
 .agnus-hero::before {
   content: '';
   position: absolute;
-  inset: -22% -4% -28% 42%;
+  inset: 0;
   z-index: -1;
-  opacity: .56;
-  transform: rotate(-13deg);
-  background: repeating-radial-gradient(ellipse at center, transparent 0 26px, rgba(230, 213, 170, .17) 27px 28px, transparent 29px 52px);
-  mask-image: linear-gradient(to left, black 0%, transparent 78%);
+  opacity: .5;
+  background: linear-gradient(90deg, rgba(255,255,255,.035), transparent 42%, rgba(0,0,0,.22));
 }
 
 .agnus-hero::after {
   content: '';
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: .7;
-  background: linear-gradient(90deg, rgba(18, 20, 17, .96) 0%, rgba(21, 24, 20, .76) 42%, rgba(21, 24, 20, .08) 100%);
+  right: 6%;
+  top: 12%;
+  width: 22%;
+  height: 1px;
+  z-index: 0;
+  opacity: .5;
+  background: linear-gradient(90deg, transparent, rgba(208, 183, 126, .6));
 }
 
 .agnus-section {

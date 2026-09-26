@@ -1,0 +1,370 @@
+REDESIGN THE AGNUS HOME SCREEN FROM THE GROUND UP.
+
+Use the current AGNUS interface as a functional reference, but DO NOT preserve its current visual structure.
+
+The current interface feels like a generic AI/Replit-generated dashboard. AGNUS must stop looking like that.
+
+The goal is to create a completely original music-streaming interface with its own visual positioning and product identity.
+
+AGNUS is a Christian music streaming platform.
+
+It must immediately feel like a REAL MUSIC PLATFORM when someone opens it — not a SaaS dashboard, not a landing page, not an AI-generated template.
+
+Think in terms of the product experience of Spotify, Deezer and Resso: music, artists, albums, playlists, discovery and playback must be the visual protagonists.
+
+DO NOT COPY Spotify, Deezer or Resso.
+Use them only as references for product maturity and music-first information architecture.
+
+==================================================
+CORE DESIGN PHILOSOPHY
+==================================================
+
+AGNUS should have its own design language.
+
+The interface should communicate:
+
+MUSIC FIRST.
+DISCOVERY FIRST.
+CONTENT FIRST.
+BRAND FIRST.
+
+The user should see album artwork, playlists, artists and music immediately.
+
+Do NOT build the page around generic UI cards.
+
+Do NOT make the page look like:
+- a SaaS dashboard
+- a Replit template
+- an AI-generated app
+- a corporate admin interface
+- a church website
+- a generic "premium dark UI"
+
+AGNUS should feel like a real consumer music product that could exist independently from Replit.
+
+==================================================
+VISUAL IDENTITY
+==================================================
+
+Create a proprietary AGNUS visual system.
+
+Primary palette:
+- deep black
+- very dark charcoal
+- warm white
+- restrained muted gold
+
+Gold must be an accent, NOT the dominant color.
+
+Use gold primarily for:
+- active states
+- very subtle highlights
+- small brand details
+- selected navigation
+- occasional dividers or indicators
+
+Avoid excessive gold.
+
+Typography:
+Use a sophisticated modern sans-serif with strong editorial hierarchy.
+
+Large headlines should feel confident and musical, not like a SaaS dashboard.
+
+The interface should have strong visual rhythm and intentional spacing.
+
+Reduce excessive rounded rectangles.
+
+Reduce excessive borders.
+
+Reduce the number of generic "cards".
+
+Use album artwork and imagery as the primary visual components.
+
+==================================================
+NEW HOME STRUCTURE
+==================================================
+
+Rebuild the entire Home screen.
+
+Do not simply rearrange the existing components.
+
+The new Home should feel like entering a music catalog.
+
+TOP:
+
+AGNUS logo / wordmark at the top.
+
+Keep the personalized greeting, but make it much more integrated into the music experience.
+
+Example:
+
+"Boa noite, Marina"
+
+Under it:
+
+"Encontre músicas que apontam para Cristo."
+
+Keep this concise and elegant.
+
+Do not let the greeting dominate the screen.
+
+==================================================
+SEARCH
+==================================================
+
+Place a refined music search field near the top.
+
+Placeholder:
+
+"Buscar músicas, artistas ou álbuns"
+
+The search field should feel like a native music-platform search experience.
+
+It should not look like a generic SaaS input.
+
+==================================================
+PRIMARY MUSIC FEATURE
+==================================================
+
+REMOVE THE CURRENT LARGE GENERIC "DESTAQUE AGNUS" CARD.
+
+Replace it with a true music-focused hero section.
+
+The hero should be driven by album/playlist artwork.
+
+Possible structure:
+
+[ LARGE ARTWORK ]
+
+DESTAQUE AGNUS
+
+Adoração que permanece.
+
+Uma seleção de músicas para acompanhar seu momento com Deus.
+
+[ ▶ Ouvir agora ]
+
+The artwork should occupy a major visual role.
+
+The hero can use a sophisticated dark photographic/abstract musical composition.
+
+Use subtle lighting and depth.
+
+Do NOT use generic gradients as the main visual.
+
+Do NOT create a generic rectangular SaaS banner.
+
+The hero should feel like a featured music collection.
+
+==================================================
+CONTINUE LISTENING
+==================================================
+
+Immediately after the main feature:
+
+CONTINUE OUVINDO
+
+Show horizontal music/album cards.
+
+Each item should contain:
+- album artwork
+- song title
+- artist name
+- optional progress bar
+
+The artwork must be visually prominent.
+
+This section should feel like an actual streaming platform.
+
+==================================================
+DISCOVERY
+==================================================
+
+Add:
+
+DESCUBRA
+
+A horizontal collection of albums, songs and artists.
+
+The purpose is to make the user want to explore.
+
+Use real music-content hierarchy rather than generic cards.
+
+==================================================
+PERSONALIZED MUSIC
+==================================================
+
+Add:
+
+FEITO PARA VOCÊ
+
+Create a personalized recommendation section.
+
+Use album artwork and playlists.
+
+==================================================
+CHRISTIAN MUSIC DISCOVERY
+==================================================
+
+Create a distinctive AGNUS section:
+
+NOVOS NA AGNUS
+
+This should highlight independent Christian artists.
+
+Artist cards should feel premium and editorial.
+
+Show:
+- artist image
+- artist name
+- short descriptor if appropriate
+
+This is an important part of AGNUS's identity.
+
+The platform should not feel like it only contains famous Christian artists.
+
+==================================================
+CURATED PLAYLISTS
+==================================================
+
+Add sections such as:
+
+PARA ADORAR
+
+ORAÇÃO
+
+LOUVOR
+
+MOMENTO COM DEUS
+
+Use large, visually distinctive playlist artwork.
+
+Do not make these look like generic UI cards.
+
+They should feel like actual music playlists.
+
+==================================================
+NEW RELEASES
+==================================================
+
+Add:
+
+NOVOS LANÇAMENTOS
+
+Show albums/singles in a horizontal music shelf.
+
+Prioritize artwork.
+
+==================================================
+BOTTOM NAVIGATION
+==================================================
+
+Keep four main destinations:
+
+Início
+Buscar
+Biblioteca
+Perfil
+
+But completely redesign the visual treatment.
+
+The bottom navigation should feel like a native music application.
+
+The active item should use the AGNUS muted-gold accent subtly.
+
+Avoid the generic "icon + text inside a floating pill" look.
+
+==================================================
+MINI PLAYER
+==================================================
+
+This is extremely important.
+
+Whenever music is playing, create a persistent mini-player directly above the bottom navigation.
+
+Structure:
+
+[album artwork]  Song title
+                 Artist
+
+                         ▶
+
+Include a subtle progress indicator.
+
+The mini-player should visually connect to the AGNUS design system.
+
+Tapping it should open the full music player.
+
+The existence of this player should make the application immediately feel like a real streaming platform.
+
+==================================================
+CONTENT DENSITY
+==================================================
+
+The current interface has too much empty space.
+
+Increase the amount of music content visible on the screen.
+
+The first screen should communicate:
+
+"This is a music streaming service."
+
+not:
+
+"This is an application dashboard."
+
+Use horizontal scrolling shelves where appropriate.
+
+Make album artwork a central visual language.
+
+==================================================
+AGAIN: DO NOT DO THIS
+==================================================
+
+Do NOT simply make the current interface more beautiful.
+
+Do NOT keep the current giant generic feature card.
+
+Do NOT create more rounded rectangles.
+
+Do NOT add random gradients.
+
+Do NOT add unnecessary glassmorphism.
+
+Do NOT add excessive shadows.
+
+Do NOT add generic AI-generated decorative elements.
+
+Do NOT make it look like a landing page.
+
+Do NOT make it look like a church application.
+
+Do NOT copy Spotify.
+
+Do NOT copy Deezer.
+
+Do NOT copy Resso.
+
+Create an original AGNUS visual identity.
+
+==================================================
+FINAL PRODUCT IMPRESSION
+==================================================
+
+When someone opens AGNUS, the immediate impression should be:
+
+"Essa é uma plataforma de música."
+
+Then:
+
+"Essa plataforma é a AGNUS."
+
+The interface should feel mature, intentional, editorial, musical and proprietary.
+
+It should look like a product with its own design team and design system, not a template generated by AI.
+
+Preserve all existing functionality, routes, data and components that are technically useful.
+
+The redesign should primarily change the visual language, information hierarchy and Home experience.
+
+Build the new interface responsively for mobile first, while maintaining a coherent desktop experience.
