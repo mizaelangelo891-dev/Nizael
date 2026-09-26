@@ -11,11 +11,18 @@ export type Artist = {
   id: string;
   name: string;
   subtitle: string;
+  genre: string;
+  trackCount: number;
   initials: string;
   art: string;
+  photo: string;
+  description: string;
+  albums: Album[];
+  station: { title: string; detail: string; art: string };
   badge?: string;
 };
 
+export type Album = { id: string; title: string; detail: string; art: string };
 export type Category = { id: string; title: string; detail: string; art: string; symbol: string };
 export type Station = { id: string; title: string; detail: string; art: string; icon: string };
 
@@ -29,10 +36,62 @@ export const tracks: Track[] = [
 ];
 
 export const artists: Artist[] = [
-  { id: 'gabriel-santos', name: 'Gabriel Santos', subtitle: 'Independente · São Paulo', initials: 'GS', art: 'art-amber', badge: 'Em ascensão' },
-  { id: 'helena-martins', name: 'Helena Martins', subtitle: 'Independente · Belo Horizonte', initials: 'HM', art: 'art-violet', badge: 'Descoberta' },
-  { id: 'som-do-alto', name: 'Som do Alto', subtitle: 'Independente · Recife', initials: 'SA', art: 'art-sage', badge: 'Descoberta' },
-  { id: 'luz-do-dia', name: 'Luz do Dia', subtitle: 'Independente · Curitiba', initials: 'LD', art: 'art-indigo', badge: 'Descoberta' },
+  {
+    id: 'gabriel-santos',
+    name: 'Gabriel Santos',
+    subtitle: 'Independente · São Paulo',
+    genre: 'Adoração contemporânea',
+    trackCount: 12,
+    initials: 'GS',
+    art: 'art-amber',
+    photo: '/artist-portraits/agnus-gabriel-santos.jpg',
+    description: 'Canções para atravessar o silêncio e encontrar presença no cotidiano.',
+    albums: [{ id: 'silencio-fogo', title: 'Silêncio & Fogo', detail: 'EP · 2026', art: 'art-amber' }],
+    station: { title: 'Estação Gabriel Santos', detail: 'Adoração íntima · 4h', art: 'art-amber' },
+    badge: 'Em ascensão',
+  },
+  {
+    id: 'helena-martins',
+    name: 'Helena Martins',
+    subtitle: 'Independente · Belo Horizonte',
+    genre: 'Pop contemplativo',
+    trackCount: 9,
+    initials: 'HM',
+    art: 'art-violet',
+    photo: '/artist-portraits/agnus-helena-martins.jpg',
+    description: 'Uma voz serena para histórias de fé, espera e recomeço.',
+    albums: [{ id: 'lugar-secreto', title: 'Lugar Secreto', detail: 'Álbum · 2025', art: 'art-violet' }],
+    station: { title: 'Estação Helena Martins', detail: 'Pop contemplativo · 3h', art: 'art-violet' },
+    badge: 'Descoberta',
+  },
+  {
+    id: 'som-do-alto',
+    name: 'Som do Alto',
+    subtitle: 'Independente · Recife',
+    genre: 'Congregacional alternativo',
+    trackCount: 18,
+    initials: 'SA',
+    art: 'art-sage',
+    photo: '/artist-portraits/agnus-som-do-alto.jpg',
+    description: 'Música para cantar junto, com raízes nordestinas e arranjos que respiram.',
+    albums: [{ id: 'casa-aberta', title: 'Casa Aberta', detail: 'Álbum · 2026', art: 'art-sage' }],
+    station: { title: 'Estação Som do Alto', detail: 'Congregacional · 5h', art: 'art-sage' },
+    badge: 'Descoberta',
+  },
+  {
+    id: 'luz-do-dia',
+    name: 'Luz do Dia',
+    subtitle: 'Independente · Curitiba',
+    genre: 'Rap & soul cristão',
+    trackCount: 11,
+    initials: 'LD',
+    art: 'art-indigo',
+    photo: '/artist-portraits/agnus-luz-do-dia.jpg',
+    description: 'Rimas honestas sobre graça, cidade e a esperança que não desiste.',
+    albums: [{ id: 'chao-firme', title: 'Chão Firme', detail: 'Mixtape · 2026', art: 'art-indigo' }],
+    station: { title: 'Estação Luz do Dia', detail: 'Rap cristão · 4h', art: 'art-indigo' },
+    badge: 'Descoberta',
+  },
 ];
 
 export const categories: Category[] = [

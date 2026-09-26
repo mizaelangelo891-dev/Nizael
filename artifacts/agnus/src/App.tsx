@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { BookOpen, ChevronRight, Play, Search } from 'lucide-react';
 import { ArtistCard } from '@/components/agnus/ArtistCard';
+import { ArtistProfile, type PlayerControls } from '@/components/agnus/ArtistProfile';
 import { BottomNavigation } from '@/components/agnus/BottomNavigation';
 import { CategoryCard } from '@/components/agnus/CategoryCard';
 import { ContinueCard } from '@/components/agnus/ContinueCard';
@@ -13,6 +14,7 @@ import { Header } from '@/components/agnus/Header';
 import { MiniPlayer, PlayerSheet } from '@/components/agnus/MiniPlayer';
 import { MusicCard } from '@/components/agnus/MusicCard';
 import { SearchBar } from '@/components/agnus/SearchBar';
+import { SearchPage } from '@/components/agnus/SearchPage';
 import { StationCard } from '@/components/agnus/StationCard';
 import { artists, categories, stations, tracks, type Artist, type Category, type Station, type Track } from '@/components/agnus/data';
 import {
@@ -24,31 +26,36 @@ import {
 
 const queryClient = new QueryClient();
 
-function Home() {
+function Home({ player }: { player: PlayerControls }) {
   const [query, setQuery] = useState('');
   const [activeNav, setActiveNav] = useState<'home' | 'search' | 'library' | 'profile'>('home');
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [playerOpen, setPlayerOpen] = useState(false);
   const [notice, setNotice] = useState('');
+  const [, setLocation] = useLocation();
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const filteredTracks = useMemo(() => tracks.filter((track) => `${track.title} ${track.artist}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
   const filteredArtists = useMemo(() => artists.filter((artist) => `${artist.name} ${artist.subtitle}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
   const filteredCategories = useMemo(() => categories.filter((category) => `${category.title} ${category.detail}`.toLocaleLowerCase().includes(normalizedQuery)), [normalizedQuery]);
 
-  const playTrack = (track: Track) => {
-    setCurrentTrack(track);
-    setPlaying(true);
-  };
+  const playTrack = player.onPlayTrack;
   const playStation = (station: Station) => {
     const stationTrack: Track = { id: `station-${station.id}`, title: station.title, artist: station.detail, duration: '∞', art: station.art, tone: 'estação AGNUS' };
-    setCurrentTrack(stationTrack);
-    setPlaying(true);
+    player.onPlayTrack(stationTrack);
   };
   const selectArtist = (artist: Artist) => {
-    setNotice(`Abrindo o universo de ${artist.name}.`);
+    setLocation(`/artistas/${artist.id}`);
     setActiveNav('home');
+  };
+  const playArtist = (artist: Artist) => {
+    const artistTrack = tracks.find((track) => track.artist === artist.name) ?? {
+      id: `artist-${artist.id}`,
+      title: 'Primeira luz',
+      artist: artist.name,
+      duration: '4:06',
+      art: artist.art,
+      tone: 'faixa em destaque',
+    };
+    player.onPlayTrack(artistTrack);
   };
   const selectCategory = (category: Category) => {
     setQuery(category.title);
@@ -58,21 +65,13 @@ function Home() {
   const changeNav = (key: 'home' | 'search' | 'library' | 'profile') => {
     setActiveNav(key);
     if (key === 'search') {
-      document.getElementById('search')?.focus();
-      setNotice('Busque por uma música, artista ou categoria.');
+      setLocation('/buscar');
+      return;
     }
     if (key === 'library') setNotice('Sua biblioteca começa com aquilo que você escolhe guardar.');
     if (key === 'profile') setNotice('Seu perfil AGNUS está pronto para ser personalizado.');
   };
   const notify = () => setNotice('Você está em dia. Novas recomendações aparecem aqui.');
-  const moveTrack = (direction: 1 | -1) => {
-    if (!currentTrack) return;
-    const index = tracks.findIndex((track) => track.id === currentTrack.id);
-    const next = tracks[(index + direction + tracks.length) % tracks.length];
-    setCurrentTrack(next);
-    setPlaying(true);
-  };
-
   return (
     <div className="agnus-noise min-h-[100dvh] overflow-x-hidden bg-[#0f100f]">
       <div className="mx-auto min-h-[100dvh] max-w-[1440px] px-4 pb-32 sm:px-7 lg:px-12 xl:px-16">
@@ -86,7 +85,7 @@ function Home() {
                 <p className="mt-2 max-w-[430px] text-[13px] leading-relaxed text-[#85847d]">Encontre músicas que apontam para Cristo.</p>
               </div>
               <div className="w-full md:max-w-[360px]">
-                <SearchBar value={query} onChange={(value) => { setQuery(value); setActiveNav('search'); }} onFilter={() => setNotice('Filtros avançados chegam em breve.')} />
+                 <SearchBar value={query} onChange={(value) => { setQuery(value); setActiveNav('search'); }} onFocus={() => setLocation('/buscar')} onFilter={() => setNotice('Filtros avançados chegam em breve.')} />
               </div>
             </div>
 
@@ -107,7 +106,7 @@ function Home() {
              <section data-testid="section-continue" className="mt-8 animate-rise" style={{ animationDelay: '.08s' }}>
                <SectionHeading label="Continue ouvindo" detail="Retome de onde você parou" />
                <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-2 lg:overflow-visible">
-                 {[tracks[0], tracks[4]].map((track) => <ContinueCard key={track.id} track={track} active={currentTrack?.id === track.id && playing} onPlay={playTrack} />)}
+                 {[tracks[0], tracks[4]].map((track) => <ContinueCard key={track.id} track={track} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
                </div>
              </section>
 
@@ -124,15 +123,15 @@ function Home() {
                 <section data-testid="section-most-played" className="mt-11 animate-rise" style={{ animationDelay: '.14s' }}>
                   <SectionHeading label="Mais ouvidas" detail="O que está chegando mais longe" action="Ver tudo" onAction={() => setNotice('Você já está ouvindo as faixas mais ouvidas.')} />
                   <div className="divide-y divide-white/[.055]">
-                    {filteredTracks.slice(0, 4).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={currentTrack?.id === track.id && playing} onPlay={playTrack} />)}
+                     {filteredTracks.slice(0, 4).map((track, index) => <MusicCard key={track.id} track={track} index={index} active={player.currentTrack?.id === track.id && player.playing} onPlay={playTrack} />)}
                     {!filteredTracks.length && <EmptyInline label="Experimente buscar por outro nome." />}
                   </div>
                 </section>
 
                  <section data-testid="section-discoveries" className="mt-11 animate-rise" style={{ animationDelay: '.2s' }}>
-                  <SectionHeading label="Descobertas do AGNUS" detail="Vozes que merecem espaço" action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
+                   <SectionHeading label="Descobertas do AGNUS" detail="Novas vozes. Novas histórias. A mesma fé." action="Explorar artistas" onAction={() => setNotice('Estas são as vozes independentes selecionadas para você.')} />
                   <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
-                    {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} />)}
+                     {filteredArtists.map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} onListen={playArtist} />)}
                     {!filteredArtists.length && <EmptyInline label="Nenhuma voz encontrada." />}
                   </div>
                 </section>
@@ -154,7 +153,7 @@ function Home() {
                        <button data-testid="button-artist-profile" onClick={() => selectArtist(artists[0])} className="relative mt-5 flex items-center gap-2 text-[11px] font-semibold text-[#d2bd88] transition hover:text-[#f0d69b]">Conhecer artista <ChevronRight size={14} /></button>
                      </div>
                      <div className="scroll-fade -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-0 sm:px-0">
-                       {artists.slice(1, 4).map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} />)}
+                        {artists.slice(1, 4).map((artist) => <ArtistCard key={artist.id} artist={artist} onSelect={selectArtist} onListen={playArtist} />)}
                      </div>
                    </div>
                  </section>
@@ -172,8 +171,8 @@ function Home() {
           </div>
         </main>
       </div>
-      {currentTrack && <MiniPlayer track={currentTrack} playing={playing} onToggle={() => setPlaying((value) => !value)} onOpen={() => setPlayerOpen(true)} onPrevious={() => moveTrack(-1)} onNext={() => moveTrack(1)} />}
-      {currentTrack && playerOpen && <PlayerSheet track={currentTrack} playing={playing} onToggle={() => setPlaying((value) => !value)} onClose={() => setPlayerOpen(false)} onPrevious={() => moveTrack(-1)} onNext={() => moveTrack(1)} />}
+       {player.currentTrack && <MiniPlayer track={player.currentTrack} playing={player.playing} onToggle={player.onToggle} onOpen={player.onOpen} onPrevious={player.onPrevious} onNext={player.onNext} />}
+       {player.currentTrack && player.playerOpen && <PlayerSheet track={player.currentTrack} playing={player.playing} onToggle={player.onToggle} onClose={player.onClose} onPrevious={player.onPrevious} onNext={player.onNext} />}
       <BottomNavigation active={activeNav} onChange={changeNav} />
     </div>
   );
@@ -187,13 +186,15 @@ function EmptyInline({ label }: { label: string }) {
   return <div data-testid="status-empty-results" className="flex min-h-20 items-center gap-3 rounded-2xl border border-dashed border-white/[.1] px-4 text-[12px] text-[#85837b]"><BookOpen size={16} className="text-[#958361]" />{label}</div>;
 }
 
-function Router() {
+function Router({ player }: { player: PlayerControls }) {
   return (
     // Keep a shared shell (sidebar, navbar) outside the boundary so it
     // survives a page crash.
     <RoutedErrorBoundary>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={() => <Home player={player} />} />
+        <Route path="/buscar" component={() => <SearchPage player={player} />} />
+        <Route path="/artistas/:id" component={() => <ArtistProfile player={player} />} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
@@ -206,11 +207,38 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
 }
 
 function App() {
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [playerOpen, setPlayerOpen] = useState(false);
+
+  const moveTrack = (direction: 1 | -1) => {
+    if (!currentTrack) return;
+    const index = tracks.findIndex((track) => track.id === currentTrack.id);
+    const next = tracks[(index + direction + tracks.length) % tracks.length];
+    setCurrentTrack(next);
+    setPlaying(true);
+  };
+
+  const player: PlayerControls = {
+    currentTrack,
+    playing,
+    playerOpen,
+    onPlayTrack: (track) => {
+      setCurrentTrack(track);
+      setPlaying(true);
+    },
+    onToggle: () => setPlaying((value) => !value),
+    onOpen: () => setPlayerOpen(true),
+    onClose: () => setPlayerOpen(false),
+    onPrevious: () => moveTrack(-1),
+    onNext: () => moveTrack(1),
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
+          <Router player={player} />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

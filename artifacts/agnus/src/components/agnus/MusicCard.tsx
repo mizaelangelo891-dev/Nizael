@@ -1,9 +1,16 @@
-import { MoreHorizontal, Pause, Play } from 'lucide-react';
+import { Check, MoreHorizontal, Pause, Play, Plus } from 'lucide-react';
 import type { Track } from './data';
 
-type MusicCardProps = { track: Track; index: number; active: boolean; onPlay: (track: Track) => void };
+type MusicCardProps = {
+  track: Track;
+  index: number;
+  active: boolean;
+  onPlay: (track: Track) => void;
+  onAddToLibrary?: (track: Track) => void;
+  inLibrary?: boolean;
+};
 
-export function MusicCard({ track, index, active, onPlay }: MusicCardProps) {
+export function MusicCard({ track, index, active, onPlay, onAddToLibrary, inLibrary = false }: MusicCardProps) {
   return (
     <div data-testid={`card-track-${track.id}`} className="group flex min-w-0 items-center gap-3 rounded-[18px] py-3 transition hover:bg-white/[.035] md:px-3">
       <span className="w-4 shrink-0 text-center font-mono-custom text-[11px] text-[#666661]">{String(index + 1).padStart(2, '0')}</span>
@@ -17,6 +24,9 @@ export function MusicCard({ track, index, active, onPlay }: MusicCardProps) {
         <p className="mt-0.5 truncate text-[11px] text-[#777670]">{track.artist}</p>
       </button>
       <span className="hidden text-[11px] text-[#666661] sm:block">{track.duration}</span>
+       {onAddToLibrary && <button data-testid={`button-library-track-${track.id}`} onClick={(event) => { event.stopPropagation(); onAddToLibrary(track); }} aria-label={inLibrary ? `Remover ${track.title} da biblioteca` : `Adicionar ${track.title} à biblioteca`} className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition ${inLibrary ? 'border-[#c7ae76]/45 bg-[#c7ae76]/10 text-[#d8c18b]' : 'border-white/[.08] text-[#716f69] hover:border-[#c7ae76]/40 hover:text-[#d8c18b]'}`}>
+         {inLibrary ? <Check size={14} /> : <Plus size={15} />}
+       </button>}
       <button data-testid={`button-more-track-${track.id}`} onClick={() => onPlay(track)} aria-label={`Mais opções para ${track.title}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#716f69] transition hover:bg-white/[.06] hover:text-[#d8d3c6]"><MoreHorizontal size={17} /></button>
     </div>
   );
